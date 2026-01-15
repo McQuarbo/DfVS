@@ -1,0 +1,63 @@
+function Out = Shear(In, Xshear, Yshear)
+%SHEAR Shear a grayscale image in x and y and keep the result centred.
+%   Out = Shear(In, Xshear, Yshear)
+%
+% Requirements satisfied:
+% - Output is same size as input (cropping allowed)
+% - Outside source pixels painted black
+% - Nearest-neighbour sampling only
+% - Transformation centred: centre pixel remains stationary
+% - Xshear and Yshear are fractions of image width/height respectively
+%
+% Handout forward mapping (centred coords):
+%   [x_d; y_d] = [1   Xs; Ys  1] * ([x_s; y_s] - [cx; cy]) + [cx; cy]
+% We implement reverse mapping to avoid holes:
+%   [x_s; y_s] = inv(S) * ([x_d; y_d] - [cx; cy]) + [cx; cy]
+
+    In = double(In);
+    [H, W] = size(In);
+
+    % Centre (x = column, y = row)
+    cx = (W + 1) / 2;
+    cy = (H + 1) / 2;
+
+    % Output same size, initialised black
+    Out = zeros(H, W);
+
+    % Convert "fraction of width/height" to actual shear factors
+    % (matches the note: Xshear expressed relative to width, Yshear to height)
+    Xs = Xshear;  % fraction of width (dimensionless)
+    Ys = Yshear;  % fraction of height (dimensionless)
+
+    % Shear matrix as per the handout
+    S = [1,  Xs;
+         Ys, 1];
+
+    Sinv = inv(S);
+
+    % Reverse mapping: for each destination pixel, find source pixel
+    for y_d = 1:H
+        for x_d = 1:W
+
+            % Shift destination coord to centre
+            xd = x_d - cx;
+            yd = y_d - cy;
+
+            % Map back to source (centred coords)
+            src = Sinv * [xd; yd];
+
+            % Shift back
+            x_s = src(1) + cx;
+            y_s = src(2) + cy;
+
+            % Nearest neighbour
+            x_nn = round(x_s);
+            y_nn = round(y_s);
+
+            % Bounds check: outside -> black (already 0)
+            if x_nn >= 1 && x_nn <= W && y_nn >= 1 && y_nn <= H
+                Out(y_d, x_d) = In(y_nn, x_nn);
+            end
+        end
+    end
+end

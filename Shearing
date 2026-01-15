@@ -1,0 +1,6 @@
+load('clown.mat')
+out = Shear(clown, 0.1, 0.5);
+
+imshow(out, [])
+colormap gray
+axis image
