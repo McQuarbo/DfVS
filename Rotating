@@ -1,6 +1,0 @@
-load('clown.mat')      % gives variable "clown"
-theta = pi/6;          % 30 degrees
-rot = Rotate(clown, theta);
-
-figure; imshow(clown, []); colormap gray; title('Original');
-figure; imshow(rot,   []); colormap gray; title('Rotated');
