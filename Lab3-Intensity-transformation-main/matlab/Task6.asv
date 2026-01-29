@@ -1,0 +1,8 @@
+clear all
+close all
+f = imread('assets/moon.tif');
+imshow(f)
+
+w_lap = fspecial('laplacian', 9)
+w_sob = fspecial('sobel')
+w_unsh = imsharpen("Radius", )
