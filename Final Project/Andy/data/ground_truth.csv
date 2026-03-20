@@ -1,0 +1,7 @@
+image_name,true_width_mm,true_height_mm,object,condition
+iphone.png,78.1,160.8,phone,easy
+iphonetilt.png,78.1,160.8,phone,hard
+champagne.png,75.0,255.0,champagne,easy
+champagnetilt.png,75.0,255.0,champagne,hard
+pikachu.png,132.0,187.0,pikachu,easy
+pikachutilted.png,132.0,187.0,pikachu,hard
